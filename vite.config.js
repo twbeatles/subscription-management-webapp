@@ -2,6 +2,7 @@ import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 
 export default defineConfig({
+  base: './', // Use relative paths for GitHub Pages
   plugins: [react()],
   server: {
     port: 3000,
@@ -14,7 +15,6 @@ export default defineConfig({
       output: {
         manualChunks: {
           'vendor-react': ['react', 'react-dom', 'react-router-dom'],
-          'vendor-firebase': ['firebase/app', 'firebase/auth', 'firebase/firestore'],
           'vendor-ui': ['lucide-react', 'recharts', 'framer-motion']
         }
       }

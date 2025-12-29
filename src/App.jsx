@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { HashRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { useState, useMemo, useCallback, useEffect, lazy, Suspense } from 'react';
 import { Plus } from 'lucide-react';
 import { AuthProvider, useAuth } from './context/AuthContext';
@@ -23,7 +23,7 @@ import DemoBanner from './components/DemoBanner';
 const LoginPage = lazy(() => import('./pages/LoginPage'));
 const ForgotPasswordPage = lazy(() => import('./pages/ForgotPasswordPage'));
 const ProfilePage = lazy(() => import('./pages/ProfilePage'));
-const AdminDashboard = lazy(() => import('./pages/AdminDashboard'));
+
 
 // Loading Screen
 function PageLoader() {
@@ -354,7 +354,7 @@ function App() {
     return (
         <ThemeProvider>
             <AuthProvider>
-                <Router>
+                <HashRouter>
                     <Suspense fallback={<PageLoader />}>
                         <Routes>
                             <Route path="/login" element={<LoginPage />} />
@@ -367,14 +367,7 @@ function App() {
                                     </ProtectedRoute>
                                 }
                             />
-                            <Route
-                                path="/admin"
-                                element={
-                                    <AdminRoute>
-                                        <AdminDashboard />
-                                    </AdminRoute>
-                                }
-                            />
+                            {/* Admin Route Removed for Local Version */}
                             <Route
                                 path="/"
                                 element={
@@ -385,7 +378,7 @@ function App() {
                             />
                         </Routes>
                     </Suspense>
-                </Router>
+                </HashRouter>
             </AuthProvider>
         </ThemeProvider>
     );
