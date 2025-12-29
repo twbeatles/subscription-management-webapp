@@ -1,5 +1,5 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-import { useState, useMemo, useCallback, useEffect } from 'react';
+import { useState, useMemo, useCallback, useEffect, lazy, Suspense } from 'react';
 import { Plus } from 'lucide-react';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import { ThemeProvider } from './context/ThemeContext';
@@ -7,13 +7,8 @@ import { useSubscriptions } from './hooks/useSubscriptions';
 import { calculateDaysLeft } from './utils/dateHelpers';
 import { getDemoSubscriptions, saveDemoSubscription, deleteDemoSubscription } from './utils/demoData';
 
-// Pages
-import LoginPage from './pages/LoginPage';
-import ForgotPasswordPage from './pages/ForgotPasswordPage';
-import ProfilePage from './pages/ProfilePage';
-import AdminDashboard from './pages/AdminDashboard';
-
-// Components
+// Components (Keep MainApp critical components eager loaded for now if small, 
+// but Pages should definitely be lazy)
 import Header from './components/Header';
 import TotalCostCard from './components/TotalCostCard';
 import AlertCard from './components/AlertCard';
@@ -23,6 +18,23 @@ import SubscriptionList from './components/SubscriptionList';
 import SubscriptionModal from './components/SubscriptionModal';
 import SettingsPanel from './components/SettingsPanel';
 import DemoBanner from './components/DemoBanner';
+
+// Lazy Loaded Pages
+const LoginPage = lazy(() => import('./pages/LoginPage'));
+const ForgotPasswordPage = lazy(() => import('./pages/ForgotPasswordPage'));
+const ProfilePage = lazy(() => import('./pages/ProfilePage'));
+const AdminDashboard = lazy(() => import('./pages/AdminDashboard'));
+
+// Loading Screen
+function PageLoader() {
+    return (
+        <div className="flex h-screen items-center justify-center bg-gray-50 dark:bg-dark-900">
+            <div className="flex flex-col items-center gap-4">
+                <div className="w-12 h-12 spinner" />
+            </div>
+        </div>
+    );
+}
 
 // Main App Content (authenticated)
 function MainApp() {
@@ -289,8 +301,8 @@ function MainApp() {
             {/* Toast notification */}
             {toast && (
                 <div className={`toast ${toast.type === 'error'
-                        ? 'bg-red-500 text-white'
-                        : 'bg-gray-900 dark:bg-white text-white dark:text-gray-900'
+                    ? 'bg-red-500 text-white'
+                    : 'bg-gray-900 dark:bg-white text-white dark:text-gray-900'
                     }`}>
                     {toast.message}
                 </div>
@@ -343,34 +355,36 @@ function App() {
         <ThemeProvider>
             <AuthProvider>
                 <Router>
-                    <Routes>
-                        <Route path="/login" element={<LoginPage />} />
-                        <Route path="/forgot-password" element={<ForgotPasswordPage />} />
-                        <Route
-                            path="/profile"
-                            element={
-                                <ProtectedRoute>
-                                    <ProfilePage />
-                                </ProtectedRoute>
-                            }
-                        />
-                        <Route
-                            path="/admin"
-                            element={
-                                <AdminRoute>
-                                    <AdminDashboard />
-                                </AdminRoute>
-                            }
-                        />
-                        <Route
-                            path="/"
-                            element={
-                                <ProtectedRoute>
-                                    <MainApp />
-                                </ProtectedRoute>
-                            }
-                        />
-                    </Routes>
+                    <Suspense fallback={<PageLoader />}>
+                        <Routes>
+                            <Route path="/login" element={<LoginPage />} />
+                            <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+                            <Route
+                                path="/profile"
+                                element={
+                                    <ProtectedRoute>
+                                        <ProfilePage />
+                                    </ProtectedRoute>
+                                }
+                            />
+                            <Route
+                                path="/admin"
+                                element={
+                                    <AdminRoute>
+                                        <AdminDashboard />
+                                    </AdminRoute>
+                                }
+                            />
+                            <Route
+                                path="/"
+                                element={
+                                    <ProtectedRoute>
+                                        <MainApp />
+                                    </ProtectedRoute>
+                                }
+                            />
+                        </Routes>
+                    </Suspense>
                 </Router>
             </AuthProvider>
         </ThemeProvider>

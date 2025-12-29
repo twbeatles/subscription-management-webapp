@@ -9,6 +9,16 @@ export default defineConfig({
   },
   build: {
     outDir: 'dist',
-    sourcemap: true
+    sourcemap: false, // Disable sourcemaps in production for smaller build
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          'vendor-react': ['react', 'react-dom', 'react-router-dom'],
+          'vendor-firebase': ['firebase/app', 'firebase/auth', 'firebase/firestore'],
+          'vendor-ui': ['lucide-react', 'recharts', 'framer-motion']
+        }
+      }
+    },
+    chunkSizeWarningLimit: 1000
   }
 })
