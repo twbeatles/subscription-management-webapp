@@ -1,8 +1,19 @@
-import { useState, useMemo, useCallback } from 'react';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { useState, useMemo, useCallback, useEffect } from 'react';
 import { Plus } from 'lucide-react';
-import { useAuth } from './hooks/useAuth';
+import { AuthProvider, useAuth } from './context/AuthContext';
+import { ThemeProvider } from './context/ThemeContext';
 import { useSubscriptions } from './hooks/useSubscriptions';
 import { calculateDaysLeft } from './utils/dateHelpers';
+import { getDemoSubscriptions, saveDemoSubscription, deleteDemoSubscription } from './utils/demoData';
+
+// Pages
+import LoginPage from './pages/LoginPage';
+import ForgotPasswordPage from './pages/ForgotPasswordPage';
+import ProfilePage from './pages/ProfilePage';
+import AdminDashboard from './pages/AdminDashboard';
+
+// Components
 import Header from './components/Header';
 import TotalCostCard from './components/TotalCostCard';
 import AlertCard from './components/AlertCard';
@@ -11,26 +22,72 @@ import FilterBar from './components/FilterBar';
 import SubscriptionList from './components/SubscriptionList';
 import SubscriptionModal from './components/SubscriptionModal';
 import SettingsPanel from './components/SettingsPanel';
+import DemoBanner from './components/DemoBanner';
 
-function App() {
-    const { user, loading: authLoading, error: authError } = useAuth();
-    const {
-        subscriptions,
-        loading: subsLoading,
-        error: subsError,
-        addSubscription,
-        updateSubscription,
-        deleteSubscription,
-        togglePause,
-        importSubscriptions,
-        clearAllSubscriptions,
-        totalMonthlyCost,
-        totalYearlyCost,
-        sortedByDate,
-        upcomingPayments,
-        categoryBreakdown,
-        activeCount,
-    } = useSubscriptions(user);
+// Main App Content (authenticated)
+function MainApp() {
+    const { user, isDemo, isAuthenticated } = useAuth();
+
+    // Use Firestore for real users, localStorage for demo
+    const firebaseHook = useSubscriptions(isDemo ? null : user);
+
+    // Demo mode state
+    const [demoSubscriptions, setDemoSubscriptions] = useState([]);
+
+    useEffect(() => {
+        if (isDemo) {
+            setDemoSubscriptions(getDemoSubscriptions());
+        }
+    }, [isDemo]);
+
+    // Combined subscriptions (demo or firebase)
+    const subscriptions = isDemo ? demoSubscriptions : firebaseHook.subscriptions;
+    const loading = isDemo ? false : firebaseHook.loading;
+
+    // Demo mode handlers
+    const handleAddSubscription = useCallback(async (data) => {
+        if (isDemo) {
+            const newSub = saveDemoSubscription({ ...data, id: `demo-${Date.now()}` });
+            setDemoSubscriptions(getDemoSubscriptions());
+            return newSub.id;
+        }
+        return firebaseHook.addSubscription(data);
+    }, [isDemo, firebaseHook]);
+
+    const handleUpdateSubscription = useCallback(async (id, data) => {
+        if (isDemo) {
+            const subs = getDemoSubscriptions();
+            const sub = subs.find(s => s.id === id);
+            if (sub) {
+                saveDemoSubscription({ ...sub, ...data });
+                setDemoSubscriptions(getDemoSubscriptions());
+            }
+            return;
+        }
+        return firebaseHook.updateSubscription(id, data);
+    }, [isDemo, firebaseHook]);
+
+    const handleDeleteSubscription = useCallback(async (id) => {
+        if (isDemo) {
+            deleteDemoSubscription(id);
+            setDemoSubscriptions(getDemoSubscriptions());
+            return;
+        }
+        return firebaseHook.deleteSubscription(id);
+    }, [isDemo, firebaseHook]);
+
+    const handleTogglePause = useCallback(async (id) => {
+        if (isDemo) {
+            const subs = getDemoSubscriptions();
+            const sub = subs.find(s => s.id === id);
+            if (sub) {
+                saveDemoSubscription({ ...sub, isPaused: !sub.isPaused });
+                setDemoSubscriptions(getDemoSubscriptions());
+            }
+            return;
+        }
+        return firebaseHook.togglePause(id);
+    }, [isDemo, firebaseHook]);
 
     // UI state
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -50,6 +107,29 @@ function App() {
             ...sub,
             daysLeft: calculateDaysLeft(sub.billingDay)
         }));
+    }, [subscriptions]);
+
+    // Computed values
+    const totalMonthlyCost = useMemo(() => {
+        return subscriptions
+            .filter(s => !s.isPaused)
+            .reduce((acc, curr) => acc + (curr.cost || 0), 0);
+    }, [subscriptions]);
+
+    const totalYearlyCost = totalMonthlyCost * 12;
+
+    const categoryBreakdown = useMemo(() => {
+        const breakdown = {};
+        subscriptions
+            .filter(s => !s.isPaused)
+            .forEach(sub => {
+                if (!breakdown[sub.category]) {
+                    breakdown[sub.category] = { count: 0, total: 0 };
+                }
+                breakdown[sub.category].count += 1;
+                breakdown[sub.category].total += sub.cost;
+            });
+        return breakdown;
     }, [subscriptions]);
 
     // Alert items (within 3 days)
@@ -79,68 +159,38 @@ function App() {
     const handleSave = useCallback(async (data, id) => {
         try {
             if (id) {
-                await updateSubscription(id, data);
+                await handleUpdateSubscription(id, data);
                 showToast('구독이 수정되었습니다');
             } else {
-                await addSubscription(data);
+                await handleAddSubscription(data);
                 showToast('새 구독이 추가되었습니다');
             }
         } catch (error) {
             showToast('저장 중 오류가 발생했습니다', 'error');
             console.error(error);
         }
-    }, [addSubscription, updateSubscription, showToast]);
+    }, [handleAddSubscription, handleUpdateSubscription, showToast]);
 
     const handleDelete = useCallback(async (id) => {
         if (!confirm('정말 삭제하시겠습니까?')) return;
 
         try {
-            await deleteSubscription(id);
+            await handleDeleteSubscription(id);
             showToast('구독이 삭제되었습니다');
         } catch (error) {
             showToast('삭제 중 오류가 발생했습니다', 'error');
             console.error(error);
         }
-    }, [deleteSubscription, showToast]);
-
-    const handleTogglePause = useCallback(async (id) => {
-        try {
-            await togglePause(id);
-            const sub = subscriptions.find(s => s.id === id);
-            showToast(sub?.isPaused ? '구독이 재개되었습니다' : '구독이 일시정지되었습니다');
-        } catch (error) {
-            showToast('상태 변경 중 오류가 발생했습니다', 'error');
-            console.error(error);
-        }
-    }, [togglePause, subscriptions, showToast]);
-
-    const handleImport = useCallback(async (data) => {
-        try {
-            const count = await importSubscriptions(data);
-            showToast(`${count}개의 구독을 가져왔습니다`);
-            return count;
-        } catch (error) {
-            showToast('가져오기 중 오류가 발생했습니다', 'error');
-            throw error;
-        }
-    }, [importSubscriptions, showToast]);
-
-    const handleClearAll = useCallback(async () => {
-        try {
-            await clearAllSubscriptions();
-            showToast('모든 데이터가 삭제되었습니다');
-        } catch (error) {
-            showToast('삭제 중 오류가 발생했습니다', 'error');
-            throw error;
-        }
-    }, [clearAllSubscriptions, showToast]);
+    }, [handleDeleteSubscription, showToast]);
 
     const handleCategoryClick = useCallback((category) => {
         setSelectedCategory(prev => prev === category ? null : category);
     }, []);
 
+    const activeCount = subscriptions.filter(s => !s.isPaused).length;
+
     // Loading state
-    if (authLoading || subsLoading) {
+    if (loading) {
         return (
             <div className="flex h-screen items-center justify-center bg-gray-50 dark:bg-dark-900">
                 <div className="flex flex-col items-center gap-4">
@@ -151,27 +201,11 @@ function App() {
         );
     }
 
-    // Auth error state
-    if (!user) {
-        return (
-            <div className="flex h-screen items-center justify-center bg-gray-50 dark:bg-dark-900 p-8">
-                <div className="text-center">
-                    <div className="w-16 h-16 mx-auto mb-4 bg-red-100 dark:bg-red-900/30 rounded-full flex items-center justify-center">
-                        <span className="text-2xl">⚠️</span>
-                    </div>
-                    <h2 className="text-lg font-bold text-gray-900 dark:text-white mb-2">
-                        로그인이 필요합니다
-                    </h2>
-                    <p className="text-gray-500 dark:text-dark-400 text-sm">
-                        {authError || '인증에 실패했습니다. 잠시 후 다시 시도해주세요.'}
-                    </p>
-                </div>
-            </div>
-        );
-    }
-
     return (
         <div className="min-h-screen bg-gray-50 dark:bg-dark-900 text-gray-800 dark:text-white font-sans pb-24 md:pb-10 transition-colors">
+            {/* Demo Banner */}
+            {isDemo && <DemoBanner />}
+
             {/* Header */}
             <Header
                 subscriptionCount={activeCount}
@@ -179,7 +213,7 @@ function App() {
             />
 
             {/* Main content */}
-            <main className="max-w-lg mx-auto px-4 py-6 space-y-6">
+            <main className={`max-w-lg mx-auto px-4 py-6 space-y-6 ${isDemo ? 'pt-16' : ''}`}>
                 {/* Total Cost Card */}
                 <TotalCostCard
                     totalMonthlyCost={totalMonthlyCost}
@@ -248,8 +282,8 @@ function App() {
                 isOpen={isSettingsOpen}
                 onClose={() => setIsSettingsOpen(false)}
                 subscriptions={subscriptions}
-                onImport={handleImport}
-                onClearAll={handleClearAll}
+                onImport={isDemo ? null : firebaseHook.importSubscriptions}
+                onClearAll={isDemo ? null : firebaseHook.clearAllSubscriptions}
             />
 
             {/* Toast notification */}
@@ -262,6 +296,84 @@ function App() {
                 </div>
             )}
         </div>
+    );
+}
+
+// Protected Route wrapper
+function ProtectedRoute({ children }) {
+    const { isAuthenticated, loading } = useAuth();
+
+    if (loading) {
+        return (
+            <div className="flex h-screen items-center justify-center bg-gray-50 dark:bg-dark-900">
+                <div className="w-12 h-12 spinner" />
+            </div>
+        );
+    }
+
+    if (!isAuthenticated) {
+        return <Navigate to="/login" replace />;
+    }
+
+    return children;
+}
+
+// Admin Route wrapper
+function AdminRoute({ children }) {
+    const { isAdmin, loading } = useAuth();
+
+    if (loading) {
+        return (
+            <div className="flex h-screen items-center justify-center bg-gray-50 dark:bg-dark-900">
+                <div className="w-12 h-12 spinner" />
+            </div>
+        );
+    }
+
+    if (!isAdmin) {
+        return <Navigate to="/" replace />;
+    }
+
+    return children;
+}
+
+// App with Router
+function App() {
+    return (
+        <ThemeProvider>
+            <AuthProvider>
+                <Router>
+                    <Routes>
+                        <Route path="/login" element={<LoginPage />} />
+                        <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+                        <Route
+                            path="/profile"
+                            element={
+                                <ProtectedRoute>
+                                    <ProfilePage />
+                                </ProtectedRoute>
+                            }
+                        />
+                        <Route
+                            path="/admin"
+                            element={
+                                <AdminRoute>
+                                    <AdminDashboard />
+                                </AdminRoute>
+                            }
+                        />
+                        <Route
+                            path="/"
+                            element={
+                                <ProtectedRoute>
+                                    <MainApp />
+                                </ProtectedRoute>
+                            }
+                        />
+                    </Routes>
+                </Router>
+            </AuthProvider>
+        </ThemeProvider>
     );
 }
 
