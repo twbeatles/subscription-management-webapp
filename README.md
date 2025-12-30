@@ -1,28 +1,33 @@
-# Subscription Manager Pro 구독 매니저
+# 구독 매니저 Pro 💳
 
 스마트한 구독 서비스 관리를 위한 React 기반 웹 애플리케이션입니다.
 
 ![React](https://img.shields.io/badge/React-18.3-61DAFB?logo=react)
 ![Vite](https://img.shields.io/badge/Vite-5.4-646CFF?logo=vite)
 ![TailwindCSS](https://img.shields.io/badge/TailwindCSS-3.4-38B2AC?logo=tailwindcss)
-![Firebase](https://img.shields.io/badge/Firebase-10.8-FFCA28?logo=firebase)
+![LocalStorage](https://img.shields.io/badge/Storage-LocalStorage-gray)
 
 ## ✨ 주요 기능
 
 ### 📊 대시보드
 - **월간/연간 지출 요약**: 전체 구독 비용을 한눈에 확인
-- **카테고리별 분석**: 도넛 차트와 진행 바로 지출 패턴 시각화
+- **카테고리별 분석**: 도넛 차트로 지출 패턴 시각화
 - **월별 추이**: 최근 6개월 지출 추이 그래프
 
 ### 📅 결제 관리
 - **결제 타임라인**: 다가오는 결제일을 시각적으로 표시
-- **D-Day 알림**: 3일 이내 결제 예정 서비스 자동 알림
+- **D-Day 알림**: 3일 이내 결제 예정 서비스 자동 표시
 - **무료 체험 추적**: 체험 기간 종료일 관리
+
+### 🔔 브라우저 알림 (NEW!)
+- **결제일 리마인더**: 결제 3일/1일 전 브라우저 알림
+- **설정 패널에서 활성화**: 원클릭으로 알림 켜기/끄기
+- **권한 관리**: 브라우저 Notification API 활용
 
 ### 🎛️ 필터 및 정렬
 - **검색**: 서비스 이름으로 빠르게 검색
 - **카테고리 필터**: OTT, 음악, 쇼핑 등 카테고리별 필터링
-- **정렬 옵션**: 결제일순, 금액순, 이름순 정렬
+- **정렬 옵션**: 결제일순, 금액순, 이름순, 카테고리순 정렬
 
 ### ⏸️ 구독 관리
 - **간편 등록**: 인기 서비스 프리셋으로 빠르게 추가
@@ -34,13 +39,18 @@
 - **데이터 내보내기**: CSV/JSON 형식으로 백업
 - **데이터 가져오기**: 기존 데이터 복원
 
+### 👤 사용자 관리
+- **다중 프로필**: 여러 프로필 생성 및 전환
+- **데모 모드**: 로그인 없이 30분간 기능 체험
+- **로컬 저장**: 모든 데이터는 브라우저에 안전하게 저장
+
 ## 🚀 시작하기
 
 ### 요구사항
 - Node.js 18+ 또는 20+
 - npm 또는 yarn
 
-### 설치
+### 설치 및 실행
 
 ```bash
 # 의존성 설치
@@ -51,52 +61,47 @@ npm run dev
 
 # 프로덕션 빌드
 npm run build
-```
 
-### 환경 변수 설정
-
-`.env` 파일을 프로젝트 루트에 생성:
-
-```env
-VITE_FIREBASE_API_KEY=your-api-key
-VITE_FIREBASE_AUTH_DOMAIN=your-project.firebaseapp.com
-VITE_FIREBASE_PROJECT_ID=your-project-id
-VITE_FIREBASE_STORAGE_BUCKET=your-project.appspot.com
-VITE_FIREBASE_MESSAGING_SENDER_ID=123456789
-VITE_FIREBASE_APP_ID=1:123456789:web:abc123
-VITE_APP_ID=subscription-manager-v1
+# 빌드 미리보기
+npm run preview
 ```
 
 ## 📁 프로젝트 구조
 
 ```
 src/
-├── components/          # UI 컴포넌트
-│   ├── Header.jsx       # 헤더 (로고, 테마 토글)
+├── components/           # UI 컴포넌트
+│   ├── Header.jsx        # 헤더 (로고, 테마 토글)
 │   ├── TotalCostCard.jsx # 총 비용 카드
-│   ├── AlertCard.jsx    # 결제 알림
-│   ├── Dashboard.jsx    # 분석 대시보드
-│   ├── DonutChart.jsx   # 도넛 차트
+│   ├── AlertCard.jsx     # 결제 알림
+│   ├── Dashboard.jsx     # 분석 대시보드
+│   ├── DonutChart.jsx    # 도넛 차트
 │   ├── PaymentTimeline.jsx # 결제 타임라인
-│   ├── FilterBar.jsx    # 필터/검색
+│   ├── FilterBar.jsx     # 필터/검색
 │   ├── SubscriptionList.jsx # 구독 목록
 │   ├── SubscriptionCard.jsx # 개별 카드
 │   ├── SubscriptionModal.jsx # 추가/수정 모달
-│   └── SettingsPanel.jsx # 설정 패널
-├── hooks/               # 커스텀 훅
-│   ├── useAuth.js       # Firebase 인증
+│   ├── SettingsPanel.jsx # 설정 패널
+│   └── DemoBanner.jsx    # 데모 모드 배너
+├── context/              # React Context
+│   ├── AuthContext.jsx   # 인증/프로필 관리
+│   └── ThemeContext.jsx  # 테마 관리
+├── hooks/                # 커스텀 훅
 │   └── useSubscriptions.js # 구독 CRUD
-├── utils/               # 유틸리티
-│   ├── constants.js     # 상수 정의
-│   ├── dateHelpers.js   # 날짜 계산
-│   └── exportData.js    # 데이터 내보내기
-├── context/             # React Context
-│   └── ThemeContext.jsx # 테마 관리
-├── config/              # 설정
-│   └── firebase.js      # Firebase 설정
-├── App.jsx              # 메인 앱
-├── main.jsx             # 엔트리 포인트
-└── index.css            # 글로벌 스타일
+├── pages/                # 페이지 컴포넌트
+│   ├── LoginPage.jsx     # 로그인/프로필 선택
+│   ├── ProfilePage.jsx   # 프로필 설정
+│   └── ForgotPasswordPage.jsx
+├── utils/                # 유틸리티
+│   ├── constants.js      # 상수 정의
+│   ├── dateHelpers.js    # 날짜 계산
+│   ├── exportData.js     # 데이터 내보내기
+│   ├── demoData.js       # 데모 데이터
+│   ├── localStorageManager.js # 로컬 저장소 관리
+│   └── notifications.js  # 브라우저 알림
+├── App.jsx               # 메인 앱
+├── main.jsx              # 엔트리 포인트
+└── index.css             # 글로벌 스타일
 ```
 
 ## 🎨 지원 카테고리
@@ -117,7 +122,8 @@ src/
 - **Frontend**: React 18, Vite 5
 - **Styling**: TailwindCSS 3.4
 - **Icons**: Lucide React
-- **Backend**: Firebase (Auth, Firestore)
+- **Charts**: Recharts
+- **Storage**: LocalStorage (브라우저 내장)
 - **Animation**: CSS Animations, Transitions
 
 ## 📱 반응형 디자인
@@ -125,11 +131,20 @@ src/
 - 모바일 (320px+): 최적화된 싱글 컬럼 레이아웃
 - 태블릿/데스크톱: 중앙 정렬 max-width 컨테이너
 
-## 🔒 보안
+## 🔒 데이터 저장
 
-- Firebase Anonymous Auth 지원
-- 사용자별 데이터 분리 저장
-- 환경 변수로 민감 정보 관리
+- 모든 데이터는 브라우저의 LocalStorage에 저장됩니다
+- 서버 전송 없이 완전한 오프라인 사용 가능
+- 브라우저 데이터 삭제 시 데이터도 함께 삭제되므로 주기적 백업 권장
+
+## 🚢 배포
+
+빌드 후 `dist/` 폴더를 정적 호스팅 서비스에 배포:
+
+- **Vercel**: `vercel --prod`
+- **Netlify**: 드래그 앤 드롭 또는 CLI
+- **GitHub Pages**: `gh-pages` 패키지 사용
+- **Firebase Hosting**: `firebase deploy`
 
 ## 📄 라이선스
 
