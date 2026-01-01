@@ -1,48 +1,72 @@
-# 구독 매니저 Pro 💳
+# 구독 매니저 Pro v2.0 💳
 
 스마트한 구독 서비스 관리를 위한 React 기반 웹 애플리케이션입니다.
 
 ![React](https://img.shields.io/badge/React-18.3-61DAFB?logo=react)
 ![Vite](https://img.shields.io/badge/Vite-5.4-646CFF?logo=vite)
 ![TailwindCSS](https://img.shields.io/badge/TailwindCSS-3.4-38B2AC?logo=tailwindcss)
-![LocalStorage](https://img.shields.io/badge/Storage-LocalStorage-gray)
+![Version](https://img.shields.io/badge/Version-2.0.0-blue)
 
 ## ✨ 주요 기능
 
-### 📊 대시보드
-- **월간/연간 지출 요약**: 전체 구독 비용을 한눈에 확인
-- **카테고리별 분석**: 도넛 차트로 지출 패턴 시각화
-- **월별 추이**: 최근 6개월 지출 추이 그래프
+### 📊 **대시보드**
+- 월간/연간 지출 요약
+- 카테고리별 도넛 차트 분석
+- 월별 지출 추이 그래프
 
-### 📅 결제 관리
-- **결제 타임라인**: 다가오는 결제일을 시각적으로 표시
-- **D-Day 알림**: 3일 이내 결제 예정 서비스 자동 표시
-- **무료 체험 추적**: 체험 기간 종료일 관리
+### 🏥 **구독 건강 점수** (v2.0 NEW!)
+- 0-100점 건강 점수 계산
+- 중복 구독, 미사용 서비스 감지
+- 예산 대비 비율 분석
 
-### 🔔 브라우저 알림 (NEW!)
-- **결제일 리마인더**: 결제 3일/1일 전 브라우저 알림
-- **설정 패널에서 활성화**: 원클릭으로 알림 켜기/끄기
-- **권한 관리**: 브라우저 Notification API 활용
+### 💰 **수입 대비 분석** (v2.0 NEW!)
+- 월 수입 설정 및 관리
+- 구독 지출 비율 계산 (권장 10% 이하)
+- 초과 시 경고 표시
 
-### 🎛️ 필터 및 정렬
-- **검색**: 서비스 이름으로 빠르게 검색
-- **카테고리 필터**: OTT, 음악, 쇼핑 등 카테고리별 필터링
-- **정렬 옵션**: 결제일순, 금액순, 이름순, 카테고리순 정렬
+### 📈 **비용 예측 시뮬레이터** (v2.0 NEW!)
+- 3/6/12/24개월 지출 예측
+- What-if 분석 (구독 추가/제거 시뮬레이션)
+- 인플레이션 반영 옵션
 
-### ⏸️ 구독 관리
-- **간편 등록**: 인기 서비스 프리셋으로 빠르게 추가
-- **일시정지**: 일시적으로 구독 중단 표시
-- **서비스 바로가기**: URL 등록시 원클릭 이동
+### 📉 **가격 변동 추적** (v2.0 NEW!)
+- 구독별 가격 히스토리
+- 업계 평균 가격 비교
+- 10% 이상 인상 경고
 
-### 🌙 테마 & 설정
-- **다크 모드**: 눈 피로도를 줄이는 다크 테마 지원
-- **데이터 내보내기**: CSV/JSON 형식으로 백업
-- **데이터 가져오기**: 기존 데이터 복원
+### 💡 **스마트 추천** (v2.0 NEW!)
+- 더 저렴한 대안 서비스 추천
+- 번들 할인 제안 (Apple One, 네이버 플러스 등)
+- 가족 플랜 전환 제안
 
-### 👤 사용자 관리
-- **다중 프로필**: 여러 프로필 생성 및 전환
-- **데모 모드**: 로그인 없이 30분간 기능 체험
-- **로컬 저장**: 모든 데이터는 브라우저에 안전하게 저장
+### 🏷️ **태그 시스템** (v2.0 NEW!)
+- 커스텀 태그 생성
+- 태그별 필터링
+
+### 🎁 **무료 체험 트래커** (v2.0 NEW!)
+- 체험 종료일 D-Day 표시
+- 자동 결제 경고
+
+### 👥 **공유 관리** (v2.0 NEW!)
+- 비용 분담 계산기
+- 멤버 관리
+
+### 📎 **영수증 관리** (v2.0 NEW!)
+- 이미지/PDF 첨부
+- 미리보기 모달
+
+### 📋 **해지 가이드** (v2.0 NEW!)
+- 주요 서비스 10개 해지 방법
+- 단계별 가이드
+
+### 🔔 **알림 시스템**
+- 결제 3일/1일 전 브라우저 알림
+- 가격 인상 알림 토글
+
+### 🌙 **테마 & 설정**
+- 다크 모드 지원
+- CSV/JSON 내보내기/가져오기
+- 캘린더 내보내기 (.ics)
 
 ## 🚀 시작하기
 
@@ -56,95 +80,70 @@
 # 의존성 설치
 npm install
 
-# 개발 서버 실행
+# 개발 서버 실행 (http://localhost:3000)
 npm run dev
 
 # 프로덕션 빌드
 npm run build
 
 # 빌드 미리보기
-npm run preview
+npx serve dist
 ```
 
 ## 📁 프로젝트 구조
 
 ```
 src/
-├── components/           # UI 컴포넌트
-│   ├── Header.jsx        # 헤더 (로고, 테마 토글)
-│   ├── TotalCostCard.jsx # 총 비용 카드
-│   ├── AlertCard.jsx     # 결제 알림
-│   ├── Dashboard.jsx     # 분석 대시보드
-│   ├── DonutChart.jsx    # 도넛 차트
-│   ├── PaymentTimeline.jsx # 결제 타임라인
-│   ├── FilterBar.jsx     # 필터/검색
-│   ├── SubscriptionList.jsx # 구독 목록
-│   ├── SubscriptionCard.jsx # 개별 카드
-│   ├── SubscriptionModal.jsx # 추가/수정 모달
-│   ├── SettingsPanel.jsx # 설정 패널
-│   └── DemoBanner.jsx    # 데모 모드 배너
+├── components/           # UI 컴포넌트 (25개)
+│   ├── HealthScore.jsx        # 구독 건강 점수
+│   ├── IncomeAnalysis.jsx     # 수입 대비 분석
+│   ├── CostSimulator.jsx      # 비용 시뮬레이터
+│   ├── PriceTracker.jsx       # 가격 변동 추적
+│   ├── SmartRecommendations.jsx # 스마트 추천
+│   ├── SubscriptionCompare.jsx  # 구독 비교
+│   ├── TagManager.jsx         # 태그 관리
+│   ├── TrialTracker.jsx       # 체험 트래커
+│   ├── SharingPanel.jsx       # 공유 관리
+│   ├── ReceiptManager.jsx     # 영수증 관리
+│   ├── CancellationGuide.jsx  # 해지 가이드
+│   └── ... (기존 컴포넌트)
 ├── context/              # React Context
-│   ├── AuthContext.jsx   # 인증/프로필 관리
-│   └── ThemeContext.jsx  # 테마 관리
 ├── hooks/                # 커스텀 훅
-│   └── useSubscriptions.js # 구독 CRUD
 ├── pages/                # 페이지 컴포넌트
-│   ├── LoginPage.jsx     # 로그인/프로필 선택
-│   ├── ProfilePage.jsx   # 프로필 설정
-│   └── ForgotPasswordPage.jsx
-├── utils/                # 유틸리티
-│   ├── constants.js      # 상수 정의
-│   ├── dateHelpers.js    # 날짜 계산
-│   ├── exportData.js     # 데이터 내보내기
-│   ├── demoData.js       # 데모 데이터
-│   ├── localStorageManager.js # 로컬 저장소 관리
-│   └── notifications.js  # 브라우저 알림
+├── utils/                # 유틸리티 (7개)
+│   ├── localStorageManager.js # 태그, 수입, 가격히스토리 저장
+│   └── ...
 ├── App.jsx               # 메인 앱
-├── main.jsx              # 엔트리 포인트
 └── index.css             # 글로벌 스타일
 ```
-
-## 🎨 지원 카테고리
-
-| 카테고리 | 색상 | 예시 서비스 |
-|---------|------|------------|
-| OTT | 🔴 빨강 | Netflix, YouTube Premium, Disney+ |
-| Music | 🟢 초록 | Spotify, Melon, Apple Music |
-| Shopping | 🟠 주황 | Coupang Wow, Naver Plus |
-| Work | ⚫ 회색 | Notion, ChatGPT Plus, Figma |
-| Education | 🟡 노랑 | 밀리의 서재, Duolingo |
-| Health | 🟢 청록 | Nike Training Club |
-| Utility | 🔵 파랑 | iCloud+, Google One |
-| Etc | ⚪ 회색 | 기타 서비스 |
 
 ## 🛠️ 기술 스택
 
 - **Frontend**: React 18, Vite 5
 - **Styling**: TailwindCSS 3.4
 - **Icons**: Lucide React
-- **Charts**: Recharts
-- **Storage**: LocalStorage (브라우저 내장)
-- **Animation**: CSS Animations, Transitions
-
-## 📱 반응형 디자인
-
-- 모바일 (320px+): 최적화된 싱글 컬럼 레이아웃
-- 태블릿/데스크톱: 중앙 정렬 max-width 컨테이너
-
-## 🔒 데이터 저장
-
-- 모든 데이터는 브라우저의 LocalStorage에 저장됩니다
-- 서버 전송 없이 완전한 오프라인 사용 가능
-- 브라우저 데이터 삭제 시 데이터도 함께 삭제되므로 주기적 백업 권장
+- **Charts**: Recharts (라이트 버전)
+- **Storage**: LocalStorage
+- **PWA**: manifest.json 포함
 
 ## 🚢 배포
 
-빌드 후 `dist/` 폴더를 정적 호스팅 서비스에 배포:
+빌드 후 `dist/` 폴더를 정적 호스팅에 배포:
 
-- **Vercel**: `vercel --prod`
-- **Netlify**: 드래그 앤 드롭 또는 CLI
-- **GitHub Pages**: `gh-pages` 패키지 사용
-- **Firebase Hosting**: `firebase deploy`
+```bash
+# Vercel
+vercel --prod
+
+# Netlify (드래그 앤 드롭)
+# dist 폴더 업로드
+
+# GitHub Pages
+npm install -g gh-pages
+gh-pages -d dist
+
+# 로컬 미리보기
+npx serve dist
+```
 
 ## 📄 라이선스
 
@@ -152,4 +151,4 @@ MIT License
 
 ---
 
-Made with ❤️ for better subscription management
+Made with ❤️ for better subscription management | v2.0.0
