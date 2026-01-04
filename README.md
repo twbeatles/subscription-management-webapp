@@ -1,60 +1,98 @@
-# 구독 매니저 Pro v3.0 💳
+# 구독 매니저 Pro v4.0 💳
 
 스마트한 구독 서비스 관리를 위한 React 기반 웹 애플리케이션입니다.
 
 ![React](https://img.shields.io/badge/React-18.3-61DAFB?logo=react)
 ![Vite](https://img.shields.io/badge/Vite-5.4-646CFF?logo=vite)
 ![TailwindCSS](https://img.shields.io/badge/TailwindCSS-3.4-38B2AC?logo=tailwindcss)
-![Version](https://img.shields.io/badge/Version-3.0.0-blue)
+![Version](https://img.shields.io/badge/Version-4.0.0-blue)
 
-## ✨ v3.0 주요 업데이트
+## ✨ v4.0 주요 업데이트
 
-### 1. 📱 **위젯 & 빠른 보기**
-- 우측 하단 플로팅 위젯으로 다가오는/금주 예정 결제 즉시 확인
-- 클릭 시 상세 정보 확장
+### 🆕 새로운 기능
 
-### 2. 💸 **환율 자동 변환**
-- 해외 구독(USD, EUR, JPY) 비용 실시간 원화(KRW) 환산
-- 24시간 자동 업데이트 및 캐싱
+#### 1. 👨‍👩‍👧‍👦 **그룹/가족 구독 관리**
+- 가족 구성원별 구독 분담 설정
+- N분의 1 자동 비용 분할 계산
+- 멤버별 지출 현황 추적
 
-### 3. 📊 **사용 빈도 추적**
-- 구독별 사용 체크인 시스템
-- GitHub 스타일의 사용 빈도 히트맵
-- 저사용 구독 자동 감지 및 낭비 경고
+#### 2. ⏰ **자동 해지 리마인더**
+- 무료 체험 종료 알림 (7일/3일/1일 전)
+- 캘린더(ICS) 내보내기 지원
+- 체험 구독 목록 관리
 
-### 4. 🎯 **목표 & 게이미피케이션**
-- 저축 목표 설정 및 달성 현황
-- 구독 정리/절약 챌린지 및 배지 시스템
-- 레벨 및 XP 성취 시스템
+#### 3. 📦 **번들 최적화 분석**
+- 개별 구독 vs 번들 비용 비교
+- Apple One, YouTube Premium 등 번들 제안
+- 예상 절약 금액 계산
 
-### 5. 🔗 **결제 수단 관리**
-- 카드/계좌별 구독 연결 관리
-- 결제 수단별 월 지출 합계
-- 만료 카드 관리
+#### 4. 📜 **구독 히스토리 타임라인**
+- 월별 구독 추가/해지 이력
+- 지출 변화 추이 그래프
+- 필터링 및 검색 기능
 
-### 6. 🗓️ **갱신 알림**
-- 연간 구독 갱신일 카운트다운
-- 30일/7일/3일/1일 전 알림
-- 자동 갱신 유무 표시
+#### 5. 📊 **퀵 스탯 위젯**
+- 홈 탭 대시보드 위젯
+- 이번 주 결제 예정 현황
+- 예산 사용률 프로그레스
 
-### 7. 🏠 **가계부 연동**
-- Toss, 뱅크샐러드, Excel, QIF 형식 내보내기 지원
-- 외부 가계부 앱 연동 가이드
+---
 
-### 8. 📊 **리포트 & 인사이트**
-- 월간/연간 지출 심층 분석
-- 카테고리별 비중 및 전월 대비 증감 리포트
-- PDF 리포트 다운로드
+### 🚀 성능 최적화 (v4.0)
 
-### 9. 🔒 **보안 설정**
-- 4자리 PIN 잠금 기능
-- 자동 잠금 타이머
-- 데이터 백업 및 복원 (JSON)
+#### React.memo 적용
+- `SubscriptionCard` - 리스트 리렌더링 방지
+- `DonutChart` - 차트 캐싱
+- `Dashboard` - 복잡 계산 최적화
 
-### 10. 🎨 **UI/UX 전면 개편**
-- **5-Tap 네비게이션**: 홈 / 구독 / 분석 / 관리 / 도구
-- **가독성 향상**: 폰트 크기 최적화 및 레이아웃 개선
-- **다크 모드**: 모든 신규 기능 다크 모드 완벽 지원
+#### Lazy Loading 확대
+- 26개 컴포넌트 동적 로딩
+- 초기 번들 크기 대폭 감소
+- 탭별 온디맨드 로드
+
+#### 메모리 누수 방지
+- useEffect cleanup 추가
+- setTimeout 정리 로직
+
+---
+
+## 📱 주요 기능 (전체)
+
+### 홈 탭
+- 💰 월간 예상 지출 대시보드
+- 📅 결제 일정 캘린더
+- 🏆 구독 건강 점수
+- 📊 퀵 스탯 위젯
+
+### 구독 탭
+- 📋 구독 목록 및 필터링
+- ➕ 구독 추가/수정/삭제
+- ⏸️ 일시정지 기능
+- 📊 테이블 뷰
+
+### 분석 탭
+- 📈 소득 대비 지출 분석
+- 🧮 비용 시뮬레이터
+- 📉 가격 변동 추적
+- 📋 월간/연간 리포트
+
+### 관리 탭
+- 💳 결제 수단 관리
+- 🔔 갱신 알림
+- 📊 사용 빈도 추적
+- 🎯 목표 & 게이미피케이션
+- 👨‍👩‍👧‍👦 가족 구독 관리
+- 📜 히스토리 타임라인
+
+### 도구 탭
+- 💡 스마트 추천
+- ⏰ 자동 해지 리마인더
+- 📦 번들 최적화
+- ⚖️ 구독 비교
+- 🧾 영수증 관리
+- 💱 환율 변환
+- 📤 가계부 내보내기
+- 🔒 보안 설정
 
 ---
 
@@ -84,30 +122,56 @@ npx serve dist
 
 ```
 src/
-├── components/           # UI 컴포넌트 (30개+)
-│   ├── QuickViewWidget.jsx    # [NEW] 퀵뷰 위젯
-│   ├── MainTabNavigation.jsx  # [NEW] 탭 네비게이션
-│   ├── GoalsSavings.jsx       # [NEW] 목표 & 게이미피케이션
-│   ├── ReportsInsights.jsx    # [NEW] 리포트 & 인사이트
-│   ├── PaymentMethodManager.jsx # [NEW] 결제 수단 관리
-│   ├── UsageTracker.jsx       # [NEW] 사용 빈도 추적
-│   ├── CurrencyConverter.jsx  # [NEW] 환율 변환기
-│   ├── SecuritySettings.jsx   # [NEW] 보안 설정
+├── components/               # UI 컴포넌트 (42개)
+│   ├── FamilySharingManager.jsx  # [NEW v4] 가족 구독 관리
+│   ├── AutoCancelReminder.jsx    # [NEW v4] 자동 해지 리마인더
+│   ├── BundleOptimizer.jsx       # [NEW v4] 번들 최적화
+│   ├── SubscriptionHistory.jsx   # [NEW v4] 히스토리 타임라인
+│   ├── QuickStatsWidget.jsx      # [NEW v4] 퀵 스탯 위젯
+│   ├── SubscriptionCard.jsx      # [PERF] React.memo 적용
+│   ├── DonutChart.jsx            # [PERF] React.memo 적용
+│   ├── Dashboard.jsx             # [PERF] React.memo 적용
 │   └── ...
-├── utils/                
-│   ├── localStorageManager.js # [UPDATE] 데이터 관리 확장
-│   └── constants.js           # [UPDATE] 상수 확장
-├── App.jsx               # [UPDATE] 탭 기반 라우팅
-└── index.css             # [UPDATE] 타이포그래피 개선
+├── hooks/
+│   └── useSubscriptions.js   # 구독 데이터 훅
+├── utils/
+│   ├── localStorageManager.js    # 로컬 데이터 관리
+│   ├── formatters.js             # [NEW v4] 포맷팅 유틸리티
+│   ├── constants.js              # 상수 정의
+│   └── dateHelpers.js            # 날짜 유틸리티
+├── context/
+│   ├── AuthContext.jsx       # 인증 컨텍스트
+│   └── ThemeContext.jsx      # 테마 컨텍스트
+├── pages/
+│   ├── LoginPage.jsx         # 로그인 페이지
+│   └── ProfilePage.jsx       # 프로필 페이지
+├── App.jsx                   # [PERF] Lazy Loading, Suspense
+└── index.css                 # [UPDATE] 타이포그래피 개선
 ```
 
 ## 🛠️ 기술 스택
 
-- **Frontend**: React 18, Vite 5
-- **Styling**: TailwindCSS 3.4
-- **Icons**: Lucide React
-- **Charts**: Recharts
-- **Storage**: LocalStorage (Demo), Firebase (Optional)
+| 영역 | 기술 |
+|------|------|
+| Frontend | React 18.3, Vite 5.4 |
+| Styling | TailwindCSS 3.4 |
+| Icons | Lucide React |
+| Charts | Recharts |
+| Storage | LocalStorage (Demo) |
+| Auth | Firebase (Optional) |
+
+## 📊 빌드 정보
+
+```
+dist/
+├── assets/
+│   ├── index-*.js          # 247KB (메인 번들)
+│   ├── index-*.css         # 80KB (스타일)
+│   ├── vendor-react-*.js   # 177KB (React)
+│   └── vendor-ui-*.js      # 37KB (UI 라이브러리)
+├── index.html
+└── manifest.json
+```
 
 ## 🚢 배포
 
@@ -118,8 +182,20 @@ src/
 vercel --prod
 
 # Netlify
-# dist 폴더 업로드
+netlify deploy --prod --dir=dist
+
+# GitHub Pages
+npm run build && npx gh-pages -d dist
 ```
+
+## 🔄 버전 히스토리
+
+| 버전 | 날짜 | 주요 변경 |
+|------|------|----------|
+| v4.0 | 2026-01 | 가족 구독, 번들 최적화, 성능 개선 |
+| v3.0 | - | 위젯, 환율, 게이미피케이션 |
+| v2.0 | - | 다크모드, 분석 기능 |
+| v1.0 | - | 초기 버전 |
 
 ## 📄 라이선스
 
@@ -127,4 +203,4 @@ MIT License
 
 ---
 
-Made with ❤️ for better subscription management | v3.0.0
+Made with ❤️ for better subscription management | v4.0.0
