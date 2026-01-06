@@ -1,15 +1,44 @@
-# 구독 매니저 Pro v4.0 💳
+# 구독 매니저 Pro v5.0 💳
 
 스마트한 구독 서비스 관리를 위한 React 기반 웹 애플리케이션입니다.
 
 ![React](https://img.shields.io/badge/React-18.3-61DAFB?logo=react)
 ![Vite](https://img.shields.io/badge/Vite-5.4-646CFF?logo=vite)
 ![TailwindCSS](https://img.shields.io/badge/TailwindCSS-3.4-38B2AC?logo=tailwindcss)
-![Version](https://img.shields.io/badge/Version-4.0.0-blue)
+![Version](https://img.shields.io/badge/Version-5.0.0-blue)
+
+## ✨ v5.0 주요 업데이트
+
+### 🆕 새로운 기능
+
+#### 1. 📅 **결제 캘린더 뷰**
+- 월별 결제 일정 시각화
+- 날짜별 구독 목록 확인
+- 카테고리별 색상 표시
+- 월별 총 지출 요약
+
+#### 2. 🔍 **스마트 검색 (Cmd/Ctrl + K)**
+- 전역 키보드 단축키 지원
+- 구독명, 카테고리, 메모 통합 검색
+- 검색어 하이라이팅
+- 검색 히스토리 저장
+- 키보드 네비게이션 (↑↓ Enter)
+
+#### 3. 🎨 **구독 아이콘 자동 매칭**
+- 50+ 서비스 로고 자동 표시
+- Netflix, YouTube, Spotify 등 주요 서비스 지원
+- Favicon 폴백 지원
+- 우아한 이미지 로드 실패 처리
+
+#### 4. 📱 **PWA 푸시 알림**
+- Service Worker 기반 오프라인 지원
+- 결제일 알림 기능
+- 앱 설치 지원 (홈 화면 추가)
+
+---
 
 ## ✨ v4.0 주요 업데이트
 
-### 🆕 새로운 기능
 
 #### 1. 👨‍👩‍👧‍👦 **그룹/가족 구독 관리**
 - 가족 구성원별 구독 분담 설정
@@ -192,6 +221,7 @@ npm run build && npx gh-pages -d dist
 
 | 버전 | 날짜 | 주요 변경 |
 |------|------|----------|
+| v5.0 | 2026-01 | 캘린더뷰, 스마트검색, 아이콘매칭, PWA알림 |
 | v4.0 | 2026-01 | 가족 구독, 번들 최적화, 성능 개선 |
 | v3.0 | - | 위젯, 환율, 게이미피케이션 |
 | v2.0 | - | 다크모드, 분석 기능 |
