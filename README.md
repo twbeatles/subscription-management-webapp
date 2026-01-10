@@ -1,11 +1,37 @@
-# 구독 매니저 Pro v5.1 💳
+# 구독 매니저 Pro v5.2 💳
 
 스마트한 구독 서비스 관리를 위한 React 기반 웹 애플리케이션입니다.
 
 ![React](https://img.shields.io/badge/React-18.3-61DAFB?logo=react)
 ![Vite](https://img.shields.io/badge/Vite-5.4-646CFF?logo=vite)
 ![TailwindCSS](https://img.shields.io/badge/TailwindCSS-3.4-38B2AC?logo=tailwindcss)
-![Version](https://img.shields.io/badge/Version-5.1.0-blue)
+![Version](https://img.shields.io/badge/Version-5.2.0-blue)
+
+## ✨ v5.2 업데이트 (2026-01-10)
+
+### 🔴 Critical 버그 수정
+
+| 컴포넌트 | 수정 내용 |
+|---------|----------|
+| `SharedMemberManager` | 누락된 state 변수 (`expandedSub`, `newMemberName`) 추가 |
+| `SharedMemberManager` | `useState` → `useEffect` 리팩토링 (이벤트 리스너 등록) |
+| `SharedMemberManager` | `window.confirm` → `useConfirmModal` 훅 적용 |
+| `PaymentMethodManager` | `useState` → `useEffect` 리팩토링 (스토리지 이벤트) |
+
+### 🟡 호환성 개선
+
+- **user?.uid → user?.id 통일**: 7개 파일에서 잘못된 프로퍼티 참조 수정
+  - `App.jsx`, `PaymentMethodManager.jsx`, `UsageTracker.jsx`
+  - `GoalsSavings.jsx`, `SecuritySettings.jsx`, `ReportsInsights.jsx`, `SettingsPanel.jsx`
+- **onKeyPress → onKeyDown**: deprecated 이벤트 핸들러 교체
+  - `SharedMemberManager.jsx`, `SplitBillCalculator.jsx`
+
+### 🛠️ 기타 개선
+
+- `localStorageManager.js`: 중복 `REPORTS_PREFIX` 키 제거
+- `useSubscriptions.js`: setState 외부로 에러 검증 로직 이동
+
+---
 
 ## ✨ v5.1 업데이트 (2026-01-08)
 
@@ -92,15 +118,17 @@ npm run preview
 
 ```
 src/
-├── components/           # UI 컴포넌트 (49개)
+├── components/           # UI 컴포넌트 (58개)
 │   ├── TotalCostCard     # [PERF v5.1] React.memo 적용
 │   ├── SubscriptionList  # [PERF v5.1] React.memo 적용
 │   ├── Dashboard         # [PERF v5.1] useMemo 안정화
 │   ├── FamilySharingManager  # [FIX v5.1] 에러 핸들링
+│   ├── SharedMemberManager   # [FIX v5.2] state 변수 및 hooks 수정
+│   ├── PaymentMethodManager  # [FIX v5.2] useEffect 리팩토링
 │   ├── AutoCancelReminder    # [FIX v5.1] 상태 영속성
 │   └── ...
 ├── hooks/
-│   └── useSubscriptions  # [PERF v5.1] 함수형 업데이트
+│   └── useSubscriptions  # [PERF v5.1] 함수형 업데이트, [FIX v5.2] 에러 로직 분리
 ├── utils/
 │   ├── localStorageManager   # 로컬 데이터 관리
 │   ├── constants             # 상수 정의
@@ -139,6 +167,7 @@ npm run deploy
 
 | 버전 | 날짜 | 주요 변경 |
 |------|------|----------|
+| v5.2 | 2026-01-10 | Critical 버그 수정, 호환성 개선, 데이터 저장 안정화 |
 | v5.1 | 2026-01-08 | 성능 최적화, 버그 수정, 코드 정리 |
 | v5.0 | 2026-01 | 캘린더뷰, 스마트검색, 아이콘매칭, PWA |
 | v4.0 | 2026-01 | 가족 구독, 번들 최적화 |
@@ -150,4 +179,4 @@ MIT License
 
 ---
 
-Made with ❤️ for better subscription management | v5.1.0
+Made with ❤️ for better subscription management | v5.2.0
