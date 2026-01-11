@@ -20,14 +20,28 @@
   <link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@400;500;600;700;800&display=swap"
     rel="stylesheet">
   <title>구독 매니저 Pro</title>
-  <script type="module" crossorigin src="./assets/index-Cmc9nYPW.js"></script>
-  <link rel="modulepreload" crossorigin href="./assets/vendor-react-Cr-SFtWI.js">
-  <link rel="modulepreload" crossorigin href="./assets/vendor-ui-BfBX_U0Y.js">
-  <link rel="stylesheet" crossorigin href="./assets/index-D5hTlsrl.css">
+  <script type="module" crossorigin src="./assets/index-XBRr7Ttx.js"></script>
+  <link rel="modulepreload" crossorigin href="./assets/vendor-react-DtEkOSI3.js">
+  <link rel="modulepreload" crossorigin href="./assets/vendor-ui-B6CU6qF1.js">
+  <link rel="stylesheet" crossorigin href="./assets/index-DqHZn-CE.css">
 </head>
 
 <body>
-  <div id="root"></div>
+  <div id="root"></div>
+  <script>
+    // Register Service Worker for PWA
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/sw.js')
+          .then((registration) => {
+            console.log('SW registered:', registration.scope);
+          })
+          .catch((error) => {
+            console.log('SW registration failed:', error);
+          });
+      });
+    }
+  </script>
 </body>
 
 </html>

@@ -3,6 +3,8 @@
     "short_name": "구독매니저",
     "description": "스마트한 구독 서비스 관리를 위한 웹 애플리케이션",
     "start_url": "/",
+    "id": "/",
+    "scope": "/",
     "display": "standalone",
     "background_color": "#ffffff",
     "theme_color": "#6366f1",
@@ -20,5 +22,6 @@
         "productivity",
         "utilities"
     ],
-    "lang": "ko-KR"
+    "lang": "ko-KR",
+    "prefer_related_applications": false
 }

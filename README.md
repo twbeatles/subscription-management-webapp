@@ -1,11 +1,29 @@
-# 구독 매니저 Pro v5.2 💳
+# 구독 매니저 Pro v5.3 💳
 
 스마트한 구독 서비스 관리를 위한 React 기반 웹 애플리케이션입니다.
 
 ![React](https://img.shields.io/badge/React-18.3-61DAFB?logo=react)
 ![Vite](https://img.shields.io/badge/Vite-5.4-646CFF?logo=vite)
 ![TailwindCSS](https://img.shields.io/badge/TailwindCSS-3.4-38B2AC?logo=tailwindcss)
-![Version](https://img.shields.io/badge/Version-5.2.0-blue)
+![Version](https://img.shields.io/badge/Version-5.3.0-blue)
+
+## ✨ v5.3 업데이트 (2026-01-11)
+
+### 💱 통화 및 결제 로직 완전 개선
+
+| 기능 | 개선 내용 |
+|------|----------|
+| **다중 통화 지원 강화** | `costHelpers.js`, `CurrencyConverter` 등 전반적인 통화 변환 로직 통합 및 정확도 향상 |
+| **주간 결제(Weekly)** | 주 단위 결제 사이클 로직 수정 및 월간/연간 비용 정규화 계산 정확도 개선 |
+| **환율 계산 최적화** | 실시간 환율 적용 및 캐싱 로직 개선으로 성능과 정확성 확보 |
+
+### 🐛 주요 버그 수정
+
+- **가격 계산 오류 수정**: 서로 다른 통화가 혼합된 구독 목록의 총합 계산 오류 해결
+- **갱신일 추적 수정**: 주간 결제 서비스의 다음 결제일 계산 정밀도 향상
+- **Adblocker 이슈**: 일부 환경에서 발생하던 광고 차단 기능 관련 오작동 및 UI 이슈 해결
+
+---
 
 ## ✨ v5.2 업데이트 (2026-01-10)
 
@@ -167,6 +185,7 @@ npm run deploy
 
 | 버전 | 날짜 | 주요 변경 |
 |------|------|----------|
+| v5.3 | 2026-01-11 | 통화/결제 로직 개선, 주간 결제 수정, Adblocker 픽스 |
 | v5.2 | 2026-01-10 | Critical 버그 수정, 호환성 개선, 데이터 저장 안정화 |
 | v5.1 | 2026-01-08 | 성능 최적화, 버그 수정, 코드 정리 |
 | v5.0 | 2026-01 | 캘린더뷰, 스마트검색, 아이콘매칭, PWA |
