@@ -1,11 +1,33 @@
-# 구독 매니저 Pro v5.4 💳
+# 구독 매니저 Pro v6.1 💳
 
 스마트한 구독 서비스 관리를 위한 React 기반 웹 애플리케이션입니다.
 
 ![React](https://img.shields.io/badge/React-18.3-61DAFB?logo=react)
 ![Vite](https://img.shields.io/badge/Vite-5.4-646CFF?logo=vite)
 ![TailwindCSS](https://img.shields.io/badge/TailwindCSS-3.4-38B2AC?logo=tailwindcss)
-![Version](https://img.shields.io/badge/Version-5.4.0-blue)
+![Version](https://img.shields.io/badge/Version-6.1.0-blue)
+
+## ✨ v6.1 업데이트 (2026-01-22)
+
+### 🚀 신규 기능
+
+| 컴포넌트 | 기능 설명 |
+|---------|----------|
+| **DuplicateDetector** | 중복 구독 자동 감지 및 절약 가능 금액 계산 |
+| **TrialCountdownWidget** | 무료 체험 만료 D-Day 카운트다운 및 알림 |
+| **MonthlyBudgetProgress** | 월간 예산 설정 및 지출 현황 진행바 |
+| **DashboardWidgets** | 드래그 가능한 위젯 대시보드 (순서 변경, on/off 토글) |
+| **SubscriptionArchive** | 해지된 구독 아카이브 및 복원 기능 |
+| **OfflineIndicator** | 오프라인 상태 감지 및 배너 표시 |
+
+### 🔧 개선사항
+
+- **localStorageManager 확장**: 아카이브, 월간 예산, 위젯 레이아웃, 오프라인 큐 관리 추가
+- **duplicateDetector 유틸리티**: Levenshtein 유사도 기반 중복 서비스 감지
+- **savingsAnalyzer 유틸리티**: AI 기반 절약 분석 및 번들 최적화 추천
+- **useOnlineStatus 훅**: 온라인/오프라인 상태 추적
+
+---
 
 ## ✨ v5.4 업데이트 (2026-01-14)
 
@@ -75,32 +97,7 @@
 
 ---
 
-## ✨ v5.1 업데이트 (2026-01-08)
-
-### 🚀 성능 최적화
-
-| 컴포넌트 | 최적화 내용 |
-|---------|-----------|
-| `TotalCostCard` | React.memo 적용으로 불필요한 리렌더링 방지 |
-| `Dashboard` | useMemo 안정화 (랜덤 값 제거) |
-| `SubscriptionList` | React.memo 적용으로 리스트 전체 리렌더링 최적화 |
-| `useSubscriptions` | 함수형 업데이트로 localStorage 중복 읽기 제거 |
-
-### 🐛 버그 수정
-
-- **FamilySharingManager**: 에러 핸들링 강화 (try-catch 추가)
-- **AuthContext**: 인증 로직 에러 핸들링 강화 및 안정성 개선
-- **AutoCancelReminder**: dismissedItems 상태 localStorage 영구 저장
-  - 새로고침 후에도 숨긴 알림 유지
-
-### 🧹 코드 정리
-
-- 조건부 콘솔 로깅 적용 (`process.env.NODE_ENV === 'development'`)
-- 프로덕션 환경에서 불필요한 console.error 출력 방지
-
----
-
-## ✨ v5.0 주요 기능
+## ✨ v5.0 ~ v5.1 주요 기능
 
 ### 📅 결제 캘린더 뷰
 - 월별 결제 일정 시각화
@@ -126,11 +123,11 @@
 
 | 탭 | 기능 |
 |---|-----|
-| **홈** | 월간 예상 지출, 결제 캘린더, 구독 건강 점수, 퀵 스탯 |
-| **구독** | 구독 목록, 필터링, 추가/수정/삭제, 테이블 뷰 |
-| **분석** | 소득 대비 분석, 비용 시뮬레이터, 가격 추적, 리포트 |
-| **관리** | 결제 수단, 갱신 알림, 가족 구독, 히스토리 |
-| **도구** | 스마트 추천, 해지 리마인더, 번들 최적화, 환율 변환 |
+| **홈** | 월간 예상 지출, 결제 캘린더, 구독 건강 점수, 퀵 스탯, 중복 감지 |
+| **구독** | 구독 목록, 필터링, 추가/수정/삭제, 테이블 뷰, 아카이브 |
+| **분석** | 소득 대비 분석, 비용 시뮬레이터, 가격 추적, 리포트, 절약 분석 |
+| **관리** | 결제 수단, 갱신 알림, 가족 구독, 히스토리, 예산 관리 |
+| **도구** | 스마트 추천, 해지 리마인더, 번들 최적화, 환율 변환, 위젯 설정 |
 
 ---
 
@@ -160,25 +157,34 @@ npm run preview
 
 ```
 src/
-├── components/           # UI 컴포넌트 (58개)
-│   ├── TotalCostCard     # [PERF v5.1] React.memo 적용
-│   ├── SubscriptionList  # [PERF v5.1] React.memo 적용
-│   ├── Dashboard         # [PERF v5.1] useMemo 안정화
-│   ├── FamilySharingManager  # [FIX v5.1] 에러 핸들링
-│   ├── SharedMemberManager   # [FIX v5.2] state 변수 및 hooks 수정
-│   ├── PaymentMethodManager  # [FIX v5.2] useEffect 리팩토링
-│   ├── AutoCancelReminder    # [FIX v5.1] 상태 영속성
+├── components/           # UI 컴포넌트 (69개)
+│   ├── TotalCostCard         # [PERF v5.1] React.memo 적용
+│   ├── SubscriptionList      # [PERF v5.1] React.memo 적용
+│   ├── Dashboard             # [PERF v5.1] useMemo 안정화
+│   ├── DuplicateDetector     # [NEW v6.1] 중복 구독 감지
+│   ├── TrialCountdownWidget  # [NEW v6.1] 체험판 만료 카운트다운
+│   ├── MonthlyBudgetProgress # [NEW v6.1] 월간 예산 진행바
+│   ├── DashboardWidgets      # [NEW v6.1] 드래그 가능 위젯
+│   ├── SubscriptionArchive   # [NEW v6.1] 구독 아카이브
+│   ├── OfflineIndicator      # [NEW v6.1] 오프라인 상태 표시
 │   └── ...
 ├── hooks/
-│   └── useSubscriptions  # [PERF v5.1] 함수형 업데이트, [FIX v5.2] 에러 로직 분리
+│   ├── useSubscriptions      # [PERF v5.1] 함수형 업데이트
+│   ├── useExchangeRates      # 환율 API
+│   ├── usePushNotifications  # 푸시 알림
+│   └── useBiometricAuth      # 생체 인증
 ├── utils/
-│   ├── localStorageManager   # 로컬 데이터 관리
+│   ├── localStorageManager   # 로컬 데이터 관리 (943줄)
+│   ├── duplicateDetector     # [NEW v6.1] 중복 감지 유틸리티
+│   ├── savingsAnalyzer       # [NEW v6.1] 절약 분석 유틸리티
+│   ├── koreanHolidays        # 한국 공휴일 처리
 │   ├── constants             # 상수 정의
+│   ├── costHelpers           # 비용 계산
 │   └── dateHelpers           # 날짜 유틸리티
 ├── context/
-│   ├── AuthContext       # 인증 컨텍스트
-│   └── ThemeContext      # 테마 컨텍스트
-└── App.jsx               # 메인 앱 (Lazy Loading)
+│   ├── AuthContext           # 인증 컨텍스트
+│   └── ThemeContext          # 테마 컨텍스트
+└── App.jsx                   # 메인 앱 (Lazy Loading, 907줄)
 ```
 
 ## 🛠️ 기술 스택
@@ -209,6 +215,7 @@ npm run deploy
 
 | 버전 | 날짜 | 주요 변경 |
 |------|------|----------|
+| v6.1 | 2026-01-22 | 중복 감지, 체험 카운트다운, 예산 진행바, 위젯 관리, 아카이브, 오프라인 표시 |
 | v5.4 | 2026-01-14 | 기능 안정성 개선 (7개 컴포넌트), 초기화 타이밍 수정 |
 | v5.3 | 2026-01-11 | 통화/결제 로직 개선, 주간 결제 수정, Adblocker 픽스 |
 | v5.2 | 2026-01-10 | Critical 버그 수정, 호환성 개선, 데이터 저장 안정화 |
@@ -223,4 +230,4 @@ MIT License
 
 ---
 
-Made with ❤️ for better subscription management | v5.4.0
+Made with ❤️ for better subscription management | v6.1.0
